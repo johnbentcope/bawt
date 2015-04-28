@@ -6,27 +6,30 @@ module.exports = function (req, res, next) {
 
 	var botPayload = {}
 
-	botPayload.text = checkWhosOut()
-	botPayload.username = 'calendarbot'
-	botPayload.channel = req.body.channel_id
-	botPayload.icon_emoji = ':date:'
+	checkWhosOut(function(peeps){
+		botPayload.text = peeps; 
+		botPayload.username = 'calendarbot'
+		botPayload.channel = req.body.channel_id
+		botPayload.icon_emoji = ':date:'
 
+		send(botPayload, function (error, status, body) {
+			if (error) {
+				return next(error)
+	
+			} else if (status !== 200) {
+				// inform user that our Incoming WebHook failed
+				return next(new Error('Incoming WebHook l : ' + status + ' ' + body + "\n") )
 
-	send(botPayload, function (error, status, body) {
-		if (error) {
-			return next(error)
+			} else {
+				return res.status(200).end()
+			}
+		});
 
-		} else if (status !== 200) {
-			// inform user that our Incoming WebHook failed
-			return next(new Error('Incoming WebHook: ' + status + ' ' + body))
+	})	
 
-		} else {
-			return res.status(200).end()
-		}
-	});
 }
  
-function checkWhosOut() {
+function checkWhosOut(callback) {
 	
 	var peeps = []
 	var data = ""
@@ -46,7 +49,6 @@ function checkWhosOut() {
 
 			data += chunk
 			
-
 		}).on('end', function() {
 
 			var jcalData = ICAL.parse(data)
@@ -68,12 +70,11 @@ function checkWhosOut() {
 				}
 
 			}
-
+			callback(peeps);
 		})
 
 	})
 	req.end()
-	return peeps
 
 }
  
@@ -95,4 +96,4 @@ function send (payload, callback) {
 	});
 }
 
-console.log(checkWhosOut());
+//console.log(checkWhosOut());
