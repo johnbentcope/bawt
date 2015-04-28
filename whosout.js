@@ -5,7 +5,7 @@ var https = require( 'https' )
 var threeout = 	new Date("2015-04-24")
 var oneout = 	new Date("2015-04-28")
 var nobodyout = new Date("2015-04-02")
-var today = 	new Date("2015-05-18") 
+var today = 	new Date() 
 
 module.exports = function (req, res, next) {
 
