@@ -1,17 +1,22 @@
 var request = require('request')
 var ical = require( 'ical.js' )
 var https = require( 'https' )
- 
+
+var threeout = 	new Date("2015-04-24")
+var oneout = 	new Date("2015-04-28")
+var nobodyout = new Date("2015-04-02")
+var today = 	new Date("2015-05-18") 
+
 module.exports = function (req, res, next) {
 
 	var botPayload = {}
 
-	checkWhosOut(function(peeps){
-		botPayload.text = peeps; 
+	checkWhosOut(function(peepstring){
+		botPayload.text = peepstring 
 		botPayload.username = 'calendarbot'
 		botPayload.channel = req.body.channel_id
 		botPayload.icon_emoji = ':date:'
-
+		console.log("botPayload.text: " + botPayload.text);
 		send(botPayload, function (error, status, body) {
 			if (error) {
 				return next(error)
@@ -32,6 +37,7 @@ module.exports = function (req, res, next) {
 function checkWhosOut(callback) {
 	
 	var peeps = []
+	var peepstring = ""
 	var data = ""
 	
 	var options = {
@@ -59,18 +65,41 @@ function checkWhosOut(callback) {
 				
 				var startDate 	= new Date(jcalData[1][2][i][1][0][3])
 				var endDate		= new Date(jcalData[1][2][i][1][1][3])
-				var today		= new Date("2015-04-24")
+				var testDate	= today
 
-				if (startDate <= today && endDate >= today) {
+				if (startDate <= testDate && endDate > testDate) {
 					
 					var summary = jcalData[1][2][i][1][10][3]
 					var name = summary.split(' - ')[0]
 					peeps.push(name)
-					console.log("name: " + name);
+					//console.log("name: " + name);
 				}
 
 			}
-			callback(peeps);
+			if (peeps.length > 0){
+				peepstring += peeps[0]
+				if (peeps.length > 1){
+					for (var i = 1; i < peeps.length; i++){
+				
+						peepstring += ", "
+						if (i == peeps.length-1) {
+							peepstring += "and "
+						}
+						peepstring += peeps[i]
+				
+					}
+				}
+				if(peeps.length > 1){
+					peepstring += " are "
+				} else {
+					peepstring += " is "
+				}
+				peepstring += "scheduled to be out today"
+			} else {
+				peepstring = "Ain't nobody supposed to be out today!"
+			}
+			//console.log("PEEPSTRING: " + peepstring);
+			callback(peepstring);
 		})
 
 	})
@@ -79,7 +108,6 @@ function checkWhosOut(callback) {
 }
  
 function send (payload, callback) {
-	console.log("SlackSend Debug");
 	//var path = process.env.INCOMING_WEBHOOK_PATH;
 	var path = '/T03MQBBHJ/B04H9MABW/5HeNoIBgsatXtnchmlkYcoZJ'
 	var uri = 'https://hooks.slack.com/services' + path
@@ -96,4 +124,8 @@ function send (payload, callback) {
 	});
 }
 
-//console.log(checkWhosOut());
+
+/*checkWhosOut(function(peepstring){
+	console.log(peepstring)
+});
+*/
