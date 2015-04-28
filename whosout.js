@@ -94,7 +94,7 @@ function checkWhosOut(callback) {
 				} else {
 					peepstring += " is "
 				}
-				peepstring += "scheduled to be out today"
+				peepstring += "scheduled to be out today."
 			} else {
 				peepstring = "Ain't nobody supposed to be out today!"
 			}
