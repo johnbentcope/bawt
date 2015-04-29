@@ -10,6 +10,7 @@ var today = 	new Date("2015-05-01") 
 
 new CronJob('* 1 9 * * 1-5', function(){
 
+	var botPayload = {}
 	
     checkWhosOut(function(peepstring){
         botPayload.text = peepstring
@@ -31,7 +32,7 @@ new CronJob('* 1 9 * * 1-5', function(){
         });
 
     })  
-	}, null, true, "America/New_York");
+}, null, true, "America/New_York");
 
 module.exports = function (req, res, next) {
 
