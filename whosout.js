@@ -6,7 +6,7 @@ var CronJob = require('cron').CronJob;
 var threeout = 	new Date("2015-04-24")
 var oneout = 	new Date("2015-04-28")
 var nobodyout = new Date("2015-04-02")
-var today = 	new Date("2015-05-01") 
+var today = 	new Date() 
 
 new CronJob('* 1 9 * * 1-5', function(){
 
