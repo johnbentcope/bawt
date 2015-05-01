@@ -87,7 +87,7 @@ function checkWhosOut(callback) {
 			//console.log("+++++++++++\n" + data + "\n++++++++++++++")			
 			var jcalData = ICAL.parse(data)
 
-			//console.log('///' + JSON.stringify(jcalData) + '///');
+			console.log('///' + JSON.stringify(jcalData) + '///');
 
 			for ( var i = 0; i < jcalData[1][2].length; i++ ) {
 				
@@ -97,7 +97,7 @@ function checkWhosOut(callback) {
 
 				if (startDate <= testDate && endDate > testDate) {
 					//console.log("\n" + jcalData[1][2][i][1][11][3] + "\n++++\n\n")
-					var summary = jcalData[1][2][i][1][11][3]
+					var summary = jcalData[1][2][i][1][10][3]
 					var name = summary.split(' - ')[0]
 					peeps.push(name)
 					console.log("Name: " + name + " -- Summary: " + summary);
