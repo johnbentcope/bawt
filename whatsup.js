@@ -3,7 +3,7 @@ var ical = require( 'ical.js' )
 var https = require( 'https' )
 var CronJob = require('cron').CronJob;
 
-var threeout = 	new Date("2015-04-24")
+var kidDay = 	new Date("2015-04-23")
 var oneout = 	new Date("2015-04-28")
 var nobodyout = new Date("2015-04-02")
 var today = 	new Date() 
@@ -40,12 +40,10 @@ module.exports = function (req, res, next) {
 
 	checkWhosOut(function(peepstring){
 		botPayload.text = peepstring 
-		//botPayload.text = "Get it together Cardbot"
 		botPayload.username = 'calendarbot'
 		botPayload.channel = req.body.channel_id
 		botPayload.icon_emoji = ':date:'
 		console.log("botPayload.text: " + botPayload.text);
-		
 		send(botPayload, function (error, status, body) {
 			if (error) {
 				return next(error)
@@ -57,7 +55,7 @@ module.exports = function (req, res, next) {
 			} else {
 				return res.status(200).end()
 			}
-		});//*/
+		});
 
 	})	
 
@@ -72,7 +70,7 @@ function checkWhosOut(callback) {
 	var options = {
 		host: 'www.google.com',
 		port: 443,
-		path: '/calendar/ical/riflepaperco.com_2832qms2poc8madqd0uumdmdvo%40group.calendar.google.com/public/basic.ics',
+		path: '/calendar/ical/riflepaperco.com_hoqbh9sv43me8hlj486tgoveqk%40group.calendar.google.com/public/basic.ics',
 		method: 'GET'
 	}	
 	
@@ -85,10 +83,11 @@ function checkWhosOut(callback) {
 			data += chunk
 			
 		}).on('end', function() {
-
+			
+			//console.log("+++++++++++\n" + data + "\n++++++++++++++")			
 			var jcalData = ICAL.parse(data)
 
-			//console.log('///' + jcalData + '///');
+			//console.log('///' + JSON.stringify(jcalData) + '///');
 
 			for ( var i = 0; i < jcalData[1][2].length; i++ ) {
 				
@@ -97,40 +96,38 @@ function checkWhosOut(callback) {
 				var testDate	= today
 
 				if (startDate <= testDate && endDate > testDate) {
-					
-					var summary = jcalData[1][2][i][1][10][3]
-					var outInfo = summary.split(' - ')
-					var name = outInfo[0]
-					var addendum = outInfo[1]
-					console.log(name + " : " + addendum)
+					//console.log("\n" + jcalData[1][2][i][1][11][3] + "\n++++\n\n")
+					var summary = jcalData[1][2][i][1][11][3]
+					var name = summary.split(' - ')[0]
 					peeps.push(name)
-					//console.log("name: " + name);
+					console.log("Name: " + name + " -- Summary: " + summary);
 				}
 
 			}
 			if (peeps.length > 0){
-				peepstring += peeps[0]
+				console.log(peepstring)
+				peepstring += "\"" + peeps[0]
 				if (peeps.length > 1){
 					for (var i = 1; i < peeps.length; i++){
 				
-						peepstring += ", "
+						peepstring += "\", "
 						if (i == peeps.length-1) {
-							peepstring += "and "
+							peepstring += "and \""
 						}
 						peepstring += peeps[i]
 				
 					}
 				}
 				if(peeps.length > 1){
-					peepstring += " are "
+					peepstring += "\" are"
 				} else {
-					peepstring += " is "
+					peepstring += "\" is"
 				}
-				peepstring += "scheduled to be out today."
+				peepstring += " happening."
 			} else {
-				peepstring = "Ain't nobody supposed to be out today!"
+				peepstring = "Looks like a slow day at the office."
 			}
-			//console.log("PEEPSTRING: " + peepstring);
+			console.log("PEEPSTRING: " + peepstring);
 			callback(peepstring);
 		})
 

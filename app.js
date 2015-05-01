@@ -7,6 +7,7 @@ var port = process.env.PORT || 3000;
 var hellobot = require('./hellobot');
 var dicebot = require('./dicebot');
 var whosout = require('./whosout');
+var whatsup = require('./whatsup');
 
 // body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,6 +23,9 @@ app.post('/roll', dicebot);
 
 // Who's Out?
 app.post('/whosout', whosout);
+
+// What's up?
+app.post('/whatsup', whatsup);
 
 // error handler
 app.use(function (err, req, res, next) {
