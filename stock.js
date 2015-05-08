@@ -4,8 +4,7 @@ module.exports = function (req, res, next) {
 
 	var botPayload = {}
 
-	checkWhosOut(function(stockstring){
-		stockstring = "derp"
+	getStock(function(stockstring){
 		botPayload.text = stockstring 
 		botPayload.username = 'calendarbot'
 		botPayload.channel = req.body.channel_id
@@ -27,5 +26,9 @@ module.exports = function (req, res, next) {
 
 	})	
 
+}
+
+function getStock(callback) {
+	callback("derp");
 }
  
