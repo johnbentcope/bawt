@@ -6,7 +6,7 @@ module.exports = function (req, res, next) {
 
 	getStock(function(stockstring){
 		botPayload.text = stockstring 
-		botPayload.username = 'calendarbot'
+		botPayload.username = 'stockbot'
 		botPayload.channel = req.body.channel_id
 		botPayload.icon_emoji = ':bar_chart:'
 		console.log("botPayload.text: " + botPayload.text);
@@ -29,7 +29,7 @@ module.exports = function (req, res, next) {
 }
 
 function getStock(callback) {
-	callback("derp");
+	callback("```\tGCL001\n503:\t\t205\nPCI:\t\t1800```");
 }
 
 function send (payload, callback) {
