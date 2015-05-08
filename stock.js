@@ -31,4 +31,21 @@ module.exports = function (req, res, next) {
 function getStock(callback) {
 	callback("derp");
 }
- 
+
+function send (payload, callback) {
+    //var path = process.env.INCOMING_WEBHOOK_PATH;
+    var path = '/T03MQBBHJ/B04H9MABW/5HeNoIBgsatXtnchmlkYcoZJ'
+    var uri = 'https://hooks.slack.com/services' + path
+    request({
+        uri: uri,
+        method: 'POST',
+        body: JSON.stringify(payload)
+    }, function (error, response, body) {
+        if(error) {
+            return callback(error)
+        }
+
+        callback(null, response.statusCode, body)
+    });
+}
+
