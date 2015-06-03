@@ -1,0 +1,32 @@
+[
+  {
+    "sku":"GCL001",
+    "name":" Floral Heart",
+    "Studio Raw":100,
+    "Studio Complete":150,
+    "503 Raw":200,
+    "503 Complete":250,
+    "MFR Raw":1200,
+    "MFR Ordered":3000
+  },
+  {
+    "sku":"GCM001",
+    "name":" Scottish Terrier",
+    "Studio Raw":150,
+    "Studio Complete":200,
+    "503 Raw":250,
+    "503 Complete":1239,
+    "MFR Raw":123,
+    "MFR Ordered":1523
+  },
+  {
+    "sku":"G4M001",
+    "name":" Thinking of You",
+    "Studio Raw":123,
+    "Studio Complete":456,
+    "503 Raw":456,
+    "503 Complete":234,
+    "MFR Raw":745,
+    "MFR Ordered":345
+  }
+]

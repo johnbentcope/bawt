@@ -145,7 +145,7 @@ function send (payload, callback) {
 		method: 'POST',
 		body: JSON.stringify(payload)
 	}, function (error, response, body) {
-		if(error) {
+		if(error || payload.indexOf("Looks like a slow day") >= 0 ) {
 			return callback(error)
 		}
 

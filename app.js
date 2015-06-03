@@ -8,7 +8,7 @@ var hellobot = require('./hellobot');
 var dicebot = require('./dicebot');
 var whosout = require('./whosout');
 var whatsup = require('./whatsup');
-var stock = require('./stock');
+//var stock = require('./stock');
 
 // body parser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,7 +29,7 @@ app.post('/whosout', whosout);
 app.post('/whatsup', whatsup);
 
 // Check some stock!
-app.post('/stock', stock);
+//app.post('/stock', stock);
 
 // error handler
 app.use(function (err, req, res, next) {
