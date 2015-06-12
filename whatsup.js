@@ -87,7 +87,7 @@ function checkWhosOut(callback) {
 			//console.log("+++++++++++\n" + data + "\n++++++++++++++")			
 			var jcalData = ICAL.parse(data)
 
-			console.log('///' + JSON.stringify(jcalData) + '///');
+			//console.log('///' + JSON.stringify(jcalData) + '///');
 
 			for ( var i = 0; i < jcalData[1][2].length; i++ ) {
 				
@@ -100,7 +100,7 @@ function checkWhosOut(callback) {
 					var summary = jcalData[1][2][i][1][10][3]
 					var name = summary.split(' - ')[0]
 					peeps.push(name)
-					console.log("Name: " + name + " -- Summary: " + summary);
+					//console.log("Name: " + name + " -- Summary: " + summary);
 				}
 
 			}
@@ -127,7 +127,7 @@ function checkWhosOut(callback) {
 			} else {
 				peepstring = "Looks like a slow day at the office."
 			}
-			console.log("PEEPSTRING: " + peepstring);
+			//console.log("PEEPSTRING: " + peepstring);
 			callback(peepstring);
 		})
 
@@ -155,6 +155,6 @@ function send (payload, callback) {
 
 
 checkWhosOut(function(peepstring){
-	console.log(peepstring)
+	//console.log(peepstring)
 });
 
