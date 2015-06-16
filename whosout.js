@@ -24,7 +24,7 @@ module.exports = function (req, res, next) {
 			if (error) {
 				return next(error)
 	
-			} else if (status !== 200 || botPayload.includes("nobody")) {
+			} else if (status !== 200) {
 				// inform user that our Incoming WebHook failed
 				return next(new Error('Incoming WebHook l : ' + status + ' ' + body + "\n") )
 
@@ -102,7 +102,7 @@ function checkWhosOut(callback) {
 				}
 				peepstring += "scheduled to be out today."
 			} else {
-				peepstring = "Ain't nobody supposed to be out today!"
+				peepstring = ""
 			}
 			//console.log("PEEPSTRING: " + peepstring);
 			callback(peepstring);
