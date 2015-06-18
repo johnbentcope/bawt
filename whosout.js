@@ -1,7 +1,6 @@
 var request = require('request')
 var ical = require( 'ical.js' )
 var https = require( 'https' )
-var CronJob = require('cron').CronJob;
 
 var threeout = 	new Date("2015-04-24")
 var oneout = 	new Date("2015-04-28")

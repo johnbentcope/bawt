@@ -1,38 +1,11 @@
 var request = require('request')
 var ical = require( 'ical.js' )
 var https = require( 'https' )
-var CronJob = require('cron').CronJob;
 
 var kidDay = 	new Date("2015-04-23")
 var oneout = 	new Date("2015-04-28")
 var nobodyout = new Date("2015-04-02")
 var today = 	new Date() 
-
-new CronJob('* 1 9 * * 1-5', function(){
-
-	var botPayload = {}
-	
-    checkWhosOut(function(peepstring){
-        botPayload.text = peepstring
-        botPayload.username = 'calendarbot'
-        botPayload.channel = "C03P53947"
-        botPayload.icon_emoji = ':date:'
-        console.log("botPayload.text: " + botPayload.text);
-        send(botPayload, function (error, status, body) {
-            if (error) {
-                return next(error)
-
-            } else if (status !== 200) {
-                // inform user that our Incoming WebHook failed
-                return next(new Error('Incoming WebHook l : ' + status + ' ' + body + "\n") )
-
-            } else {
-                return res.status(200).end()
-            }
-        });
-
-    })  
-}, null, true, "America/New_York");
 
 module.exports = function (req, res, next) {
 
