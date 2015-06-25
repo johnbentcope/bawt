@@ -5,6 +5,7 @@ var https = require( 'https' )
 var threeout = 	new Date("2015-04-24")
 var oneout = 	new Date("2015-04-28")
 var nobodyout = new Date("2015-04-02")
+var toomanyout = new Date("2015-06-26")
 var today = 	new Date() 
 
 module.exports = function (req, res, next) {
@@ -80,6 +81,9 @@ function checkWhosOut(callback) {
 					//console.log("name: " + name);
 				}
 
+			}
+			if (peeps.length > 5){
+				peepstring += "Wow! "	
 			}
 			if (peeps.length > 0){
 				peepstring += peeps[0]
