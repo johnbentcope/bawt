@@ -2,11 +2,43 @@ var request = require('request')
 var ical = require( 'ical.js' )
 var https = require( 'https' )
 
-var threeout = 	new Date("2015-04-24")
-var oneout = 	new Date("2015-04-28")
-var nobodyout = new Date("2015-04-02")
-var toomanyout = new Date("2015-06-26")
+/*
+ * Prints different cases for 0, 1, 2, 3-4, and 5+ people out.
+ * Leave testAmount -1 for today's date
+ * DEBUG should be reset to false after testing
+ */
+
+var DEBUG = false
+var testAmount = 5
+
 var today = 	new Date() 
+
+if (DEBUG == true){
+	console.log(testAmount)
+	switch (testAmount){
+		case 0:
+			today = new Date("2015-04-02")
+			break
+		case 0.25:
+			today = new Date("2015-06-29")
+			break
+		case 1:
+			today = new Date("2015-04-29")
+			break
+		case 2:
+			today = new Date("2015-04-28")
+			break
+		case 3:
+		case 4:
+			today =	new Date("2015-04-24")
+			break
+		case 5:
+			today = new Date("2015-06-26")
+			break
+		default:
+			today = new Date()
+	}
+}
 
 module.exports = function (req, res, next) {
 
@@ -40,16 +72,17 @@ module.exports = function (req, res, next) {
 function checkWhosOut(callback) {
 	
 	var peeps = []
-	var peepstring = ""
+	var peepString = ""
+	var peepsPartial = ""
 	var data = ""
 	
 	var options = {
-		host: 'www.google.com',
+		host: 'www.googleapis.com',
 		port: 443,
-		path: '/calendar/ical/riflepaperco.com_2832qms2poc8madqd0uumdmdvo%40group.calendar.google.com/public/basic.ics',
+		path: '/calendar/v3/calendars/riflepaperco.com_2832qms2poc8madqd0uumdmdvo%40group.calendar.google.com/events?fields=items(originalStartTime%2CprivateCopy%2Clocked%2Cdescription%2CrecurringEventId%2CendTimeUnspecified%2Csummary%2Clocation%2Cstart%2Cend%2Cid)&showDeleted=false&maxResults=2500&key=AIzaSyBMo4QCkh6DtK45U_2zPHtB1GfyLH4rWeU',
 		method: 'GET'
 	}	
-	
+	//console.log(options)
 	
 	var req = https.request(options, function(res) {
 
@@ -59,56 +92,60 @@ function checkWhosOut(callback) {
 			data += chunk
 			
 		}).on('end', function() {
-
-			var jcalData = ICAL.parse(data)
-
-			//console.log('///' + jcalData + '///');
-
-			for ( var i = 0; i < jcalData[1][2].length; i++ ) {
+			jason = JSON.parse(data)
+			//console.log(data);
+			// step through the data looking for events today
+			
+			for ( outskie in jason['items'] ){
+				suspect = jason['items'][outskie]
 				
-				var startDate 	= new Date(jcalData[1][2][i][1][0][3])
-				var endDate		= new Date(jcalData[1][2][i][1][1][3])
+				// The following are ternaries to deal with Chrissy putting start and end times on some events
+				// If it's an all day event, the start/end fields have a 'date' param, otherwise it's a 'dateTime' param
+				
+				var startDate = new Date((suspect['start'].hasOwnProperty('date')) ?
+									suspect['start']['date'] :
+									suspect['start']['dateTime'].substr(0,10))
+				var endDate = new Date((suspect['end'].hasOwnProperty('date')) ?
+									suspect['end']['date'] :
+									suspect['end']['dateTime'].substr(0,10))
+				
+				var summary		= suspect['summary']
+				var name			= summary.substr(0,summary.indexOf(" - "))
+				var partial  	= summary.match(/[^()]+/g)[1] || ""
 				var testDate	= today
-
+				//if (DEBUG) console.log("%s : %s : %s",startDate, endDate, summary)
 				if (startDate <= testDate && endDate > testDate) {
-					
-					var summary = jcalData[1][2][i][1][10][3]
-					var outInfo = summary.split(' - ')
-					var name = outInfo[0]
-					var addendum = outInfo[1]
-					console.log(name + " : " + addendum)
-					peeps.push(name)
-					//console.log("name: " + name);
+					//if (DEBUG) console.log("'%s'\t\t'%s'", name, partial)
+					var usefulName = name
+					if (partial) usefulName = usefulName + " (" + partial + ")"
+					peeps.push(usefulName)
 				}
-
 			}
-			if (peeps.length > 5){
-				peepstring += "Wow! "	
-			}
+			if (peeps.length > 5) peepString += "Wow! "
 			if (peeps.length > 0){
-				peepstring += peeps[0]
+				peepString += peeps[0]
 				if (peeps.length > 1){
 					for (var i = 1; i < peeps.length; i++){
-				
-						peepstring += ", "
-						if (i == peeps.length-1) {
-							peepstring += "and "
+						if (i <= peeps.length-2){
+							peepString += ","
 						}
-						peepstring += peeps[i]
-				
+						peepString += " "
+						if (i == peeps.length-1) {
+							peepString += "and "
+						}
+						peepString += peeps[i]
 					}
 				}
-				if(peeps.length > 1){
-					peepstring += " are "
+				if (peeps.length > 1) {
+					peepString+= " are "
 				} else {
-					peepstring += " is "
+					peepString += " is "
 				}
-				peepstring += "scheduled to be out today."
+				peepString += "scheduled to be out today."
 			} else {
-				peepstring = ""
+				peepString = ""
 			}
-			//console.log("PEEPSTRING: " + peepstring);
-			callback(peepstring);
+			callback(peepString)
 		})
 
 	})
@@ -134,7 +171,6 @@ function send (payload, callback) {
 }
 
 
-checkWhosOut(function(peepstring){
-	console.log(peepstring)
+checkWhosOut(function(peepString){
+	console.log(peepString)
 });
-
