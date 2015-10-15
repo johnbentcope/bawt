@@ -1,47 +1,21 @@
 var request = require('request')
-var ical = require( 'ical.js' )
+var Client = require('ftp');
 var https = require( 'https' )
 
-/*
- * Prints different cases for 0, 1, 2, 3-4, and 5+ people out.
- * Leave testAmount -1 for today's date
- * DEBUG should be reset to false after testing
- */
+var c = new Client();
+c.on('ready', function() {
+  c.list(function(err, list) {
+    if (err) throw err;
+    console.dir(list);
+    c.end();
+  });
+});
 
 var DEBUG = false
-var testAmount = 5
-
-var today = 	new Date() 
-
-if (DEBUG == true){
-	console.log(testAmount)
-	switch (testAmount){
-		case 0:
-			today = new Date("2015-04-02")
-			break
-		case 0.25:
-			today = new Date("2015-06-29")
-			break
-		case 1:
-			today = new Date("2015-04-29")
-			break
-		case 2:
-			today = new Date("2015-04-28")
-			break
-		case 3:
-		case 4:
-			today =	new Date("2015-04-24")
-			break
-		case 5:
-			today = new Date("2015-06-26")
-			break
-		default:
-			today = new Date()
-	}
-}
+c.connect();
 
 module.exports = function (req, res, next) {
-console.log("TESTING HERE TOO");
+
 	var botPayload = {}
 
 	checkWhosOut(function(peepstring){
@@ -70,7 +44,8 @@ console.log("TESTING HERE TOO");
 }
  
 function checkWhosOut(callback) {
-	
+
+	/*
 	var peeps = []
 	var peepString = ""
 	var peepsPartial = ""
@@ -150,7 +125,7 @@ function checkWhosOut(callback) {
 
 	})
 	req.end()
-
+*/
 }
  
 function send (payload, callback) {
