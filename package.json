@@ -14,6 +14,7 @@
     "google-auth-library": "^0.9.4",
     "googleapis": "^2.0.6",
     "request": "^2.55.0",
-		"csv": "0.4.6"
+		"csv": "0.4.6",
+		"csv-parse": "x.x.x"
 	}
 }
