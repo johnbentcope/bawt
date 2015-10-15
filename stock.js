@@ -22,7 +22,7 @@ console.log("TEST")
     botPayload.channel = req.body.channel_id
     botPayload.icon_emoji = ':stock:'
     //console.log("botPayload.text: " + botPayload.text);
-
+		console.log(botPayload);
     send(botPayload, function (error, status, body) {
       if (error) {
         return next(error)
@@ -35,7 +35,7 @@ console.log("TEST")
         return res.status(200).end()
       }
     });//*/
-
+contents = "";
   })
 
 }
@@ -62,8 +62,8 @@ function logTheThing(callback){
 	parse(contents, {comment:'#'}, function(err, output){
 		//console.log(output)
 		for (record in output){
-			text += output[record][0] + " is " + output[record][2] + " until " + output[record][4];
-			text += "\n >" 
+			//text += output[record][0] + " is " + output[record][2] + " until " + output[record][4];
+			//text += "\n >" 
 		}
 		callback(text)
 	})
