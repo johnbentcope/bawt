@@ -37,7 +37,7 @@ console.log("TEST")
 }
 
 function reader(callback){
-	fs.readFile('stockupdate.csv', 'utf8', function (err,data) {
+	fs.readFile('http://johnbentcope.com/stockupdate.csv', 'utf8', function (err,data) {
  		if (err) {
     	return console.log(err)
   	}
