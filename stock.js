@@ -35,6 +35,14 @@ console.log("TEST")
   })
 
 }
+var request = require('request');
+request('http://www.johnbentcope.com/stockupdate.csv', function (error, response, body) {
+  if (!error && response.statusCode == 200) {
+	    console.log(body)
+			contents = body;
+	}
+})
+
 
 function reader(callback){
 	fs.readFile('http://johnbentcope.com/stockupdate.csv', 'utf8', function (err,data) {
