@@ -13,7 +13,7 @@ console.log("TEST")
 
   logTheThing(function(stockstring){
     botPayload.text = stockstring;
-    botPayload.text = "Get it together Cardbot"
+    //botPayload.text = "Get it together Cardbot"
     botPayload.username = 'calendarbot'
     botPayload.channel = req.body.channel_id
     botPayload.icon_emoji = ':date:'
