@@ -12,11 +12,15 @@ console.log("TEST")
   var botPayload = {}
 
   logTheThing(function(stockstring){
-    botPayload.text = stockstring;
+		botPayload.pretext = "Low Stock Reminders";
+		botPayload.text = stockstring;
+		botPayload.color = '#FF66FF';
+		botPayload.mrkdwn = true;
+		botPayload.mrkdwn_in = '["text","fields"]';
     //botPayload.text = "Get it together Cardbot"
-    botPayload.username = 'calendarbot'
+    botPayload.username = 'stockpot'
     botPayload.channel = req.body.channel_id
-    botPayload.icon_emoji = ':date:'
+    botPayload.icon_emoji = ':stock:'
     //console.log("botPayload.text: " + botPayload.text);
 
     send(botPayload, function (error, status, body) {
@@ -59,7 +63,7 @@ function logTheThing(callback){
 		//console.log(output)
 		for (record in output){
 			text += output[record][0] + " is " + output[record][2] + " until " + output[record][4];
-			text += "\n test<" 
+			text += "\n <" 
 		}
 		callback(text)
 	})
