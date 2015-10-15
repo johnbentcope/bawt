@@ -63,7 +63,7 @@ function logTheThing(callback){
 		//console.log(output)
 		for (record in output){
 			text += output[record][0] + " is " + output[record][2] + " until " + output[record][4];
-			text += "\n <" 
+			text += "\n >" 
 		}
 		callback(text)
 	})
