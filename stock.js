@@ -8,7 +8,6 @@ var contents = ""
 var text = ""
 
 module.exports = function (req, res, next) {
-console.log("TEST")
   var botPayload = {}
 
   logTheThing(function(stockstring){
@@ -35,7 +34,7 @@ console.log("TEST")
         return res.status(200).end()
       }
     });//*/
-contents = "";
+		contents = "";
   })
 
 }
@@ -61,10 +60,20 @@ function reader(callback){
 function logTheThing(callback){
 	parse(contents, {comment:'#'}, function(err, output){
 		//console.log(output)
+		text  = "```+----------------------+----------------------+--------+------------+------------+\n"
 		for (record in output){
-			//text += output[record][0] + " is " + output[record][2] + " until " + output[record][4];
-			//text += "\n >" 
+		var insertable = "|                      |                      |        |            |            |"
+		var inSku = output[record][0];
+		var inName = output[record][1];
+		var inStat = output[record][2];
+		var inLast = output[record][3];
+		var inOrdr = output[record][4];
+			if (record != 0){
+				insertable = insertable.substr(0,2) + inSku + insertable.substr(2+inSku.length);//me output[record][1]+ " ) is " + output[record][2] + ".";
+				text += insertable + "\n";
+			}
 		}
+		text += "```";
 		callback(text)
 	})
 }
